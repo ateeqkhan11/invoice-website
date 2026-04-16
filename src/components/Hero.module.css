@@ -1,0 +1,50 @@
+.hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 100px 5% 60px; position: relative; overflow: hidden;
+}
+.glow {
+  position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 700px;
+  background: radial-gradient(ellipse, rgba(139,92,246,.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.content { position: relative; z-index: 1; }
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(139,92,246,.12); border: 1px solid rgba(139,92,246,.3);
+  padding: .35rem 1rem; border-radius: 999px;
+  font-size: .8rem; color: var(--violet-light); font-weight: 500;
+  margin-bottom: 1.8rem; animation: fadeInUp .6s ease both;
+}
+.dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--violet-bright); animation: pulse 2s infinite;
+}
+.h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.6rem,6vw,4.8rem); font-weight: 700;
+  line-height: 1.1; letter-spacing: -.03em; margin-bottom: 1.5rem;
+  animation: fadeInUp .7s ease .1s both;
+}
+.sub {
+  font-size: clamp(1rem,2vw,1.25rem); color: var(--text-secondary);
+  max-width: 640px; margin: 0 auto 2.5rem; line-height: 1.7;
+  animation: fadeInUp .7s ease .2s both;
+}
+.actions {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1rem; flex-wrap: wrap; animation: fadeInUp .7s ease .3s both;
+}
+.stats {
+  display: flex; align-items: center; justify-content: center;
+  gap: 3rem; margin-top: 4rem; padding-top: 3rem;
+  border-top: 1px solid var(--border-subtle); flex-wrap: wrap;
+  animation: fadeInUp .7s ease .4s both;
+}
+.stat { text-align: center; }
+.statNum {
+  font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; font-weight: 700;
+  background: linear-gradient(135deg, var(--violet-core), var(--violet-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.statLabel { font-size: .82rem; color: var(--text-muted); margin-top: .2rem; }

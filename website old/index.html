@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>InvoAIce.io — AI-Native AP Automation</title>
+<meta name="description" content="InvoAIce transforms accounts payable with an 8-agent AI swarm. 88% touchless rate, $4.20/invoice, 14-second processing. Replace Kofax, OpenText VIM, and manual processes."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --violet-deep:#5B21B6;
+  --violet-core:#8B5CF6;
+  --violet-bright:#A855F7;
+  --violet-light:#DDD6FE;
+  --violet-glow:rgba(139,92,246,0.15);
+  --bg:#050505;
+  --bg-card:#0D0D0F;
+  --bg-card2:#111118;
+  --border:rgba(139,92,246,0.2);
+  --border-subtle:rgba(255,255,255,0.06);
+  --text-primary:#F8F8FF;
+  --text-secondary:#94A3B8;
+  --text-muted:#4B5563;
+  --green:#10B981;
+  --amber:#F59E0B;
+  --red:#EF4444;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text-primary);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;backdrop-filter:blur(20px);background:rgba(5,5,5,0.8);border-bottom:1px solid var(--border-subtle);transition:all .3s}
+.nav-logo{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:600;text-decoration:none;color:var(--text-primary);display:flex;align-items:center;gap:10px}
+.logo-wave{width:32px;height:20px}
+.logo-text span.ai{background:linear-gradient(90deg,var(--violet-deep),var(--violet-core),var(--violet-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700}
+.logo-text span.io{color:var(--text-muted);font-size:.85em}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
+.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text-primary)}
+.nav-cta{background:linear-gradient(135deg,var(--violet-deep),var(--violet-bright));color:#fff;border:none;padding:.55rem 1.4rem;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;text-decoration:none;transition:opacity .2s,transform .2s}
+.nav-cta:hover{opacity:.9;transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 5% 60px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(ellipse,rgba(139,92,246,.18) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);padding:.35rem 1rem;border-radius:999px;font-size:.8rem;color:var(--violet-light);font-weight:500;margin-bottom:1.8rem;animation:fadeInUp .6s ease}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--violet-bright);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.6rem,6vw,4.8rem);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:1.5rem;animation:fadeInUp .7s ease .1s both}
+h1 .grad{background:linear-gradient(135deg,var(--violet-core),var(--violet-bright),var(--violet-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(1rem,2vw,1.25rem);color:var(--text-secondary);max-width:640px;margin:0 auto 2.5rem;line-height:1.7;animation:fadeInUp .7s ease .2s both}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;animation:fadeInUp .7s ease .3s both}
+.btn-primary{background:linear-gradient(135deg,var(--violet-deep),var(--violet-bright));color:#fff;border:none;padding:.8rem 2rem;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 8px 30px rgba(139,92,246,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(139,92,246,.5)}
+.btn-ghost{background:transparent;color:var(--text-primary);border:1px solid var(--border-subtle);padding:.8rem 2rem;border-radius:10px;font-size:1rem;font-weight:500;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-ghost:hover{border-color:var(--border);background:rgba(255,255,255,.04)}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:3rem;margin-top:4rem;padding-top:3rem;border-top:1px solid var(--border-subtle);flex-wrap:wrap;animation:fadeInUp .7s ease .4s both}
+.stat-num{font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700;background:linear-gradient(135deg,var(--violet-core),var(--violet-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:.82rem;color:var(--text-muted);margin-top:.2rem}
+
+/* ── DASHBOARD PREVIEW ── */
+.preview-section{padding:40px 5% 100px;display:flex;justify-content:center}
+.dashboard-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:2px;max-width:920px;width:100%;box-shadow:0 0 80px rgba(139,92,246,.12),0 40px 80px rgba(0,0,0,.6);animation:fadeInUp .8s ease .5s both}
+.dash-header{background:var(--bg-card2);border-radius:18px 18px 0 0;padding:14px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-subtle)}
+.dash-dots{display:flex;gap:6px}.dash-dots span{width:12px;height:12px;border-radius:50%}
+.dash-dots span:nth-child(1){background:#EF4444}.dash-dots span:nth-child(2){background:#F59E0B}.dash-dots span:nth-child(3){background:#10B981}
+.dash-url{margin-left:auto;font-size:.75rem;color:var(--text-muted);background:rgba(255,255,255,.04);padding:.3rem .8rem;border-radius:6px}
+.dash-body{padding:24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.dash-metric{background:rgba(139,92,246,.06);border:1px solid var(--border);border-radius:12px;padding:16px}
+.dm-label{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+.dm-value{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:700;color:var(--text-primary)}
+.dm-sub{font-size:.75rem;color:var(--green);margin-top:.3rem}
+.dash-pipeline{grid-column:1/-1;background:rgba(255,255,255,.02);border:1px solid var(--border-subtle);border-radius:12px;padding:18px}
+.pipe-title{font-size:.78rem;color:var(--text-muted);margin-bottom:14px;text-transform:uppercase;letter-spacing:.08em}
+.pipe-stages{display:flex;align-items:center;gap:0;overflow-x:auto}
+.pipe-stage{flex:1;min-width:120px;text-align:center;padding:12px 8px;position:relative}
+.pipe-stage::after{content:'→';position:absolute;right:-8px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.9rem}
+.pipe-stage:last-child::after{display:none}
+.stage-badge{display:inline-block;padding:.3rem .8rem;border-radius:999px;font-size:.72rem;font-weight:600;margin-bottom:.5rem}
+.stage-count{font-size:1.4rem;font-weight:700;color:var(--text-primary);font-family:'Space Grotesk',sans-serif}
+.stage-lbl{font-size:.68rem;color:var(--text-muted)}
+.s-ocr{background:rgba(139,92,246,.2);color:var(--violet-light)}
+.s-ai{background:rgba(168,85,247,.2);color:var(--violet-bright)}
+.s-match{background:rgba(16,185,129,.15);color:#6EE7B7}
+.s-pend{background:rgba(245,158,11,.15);color:#FCD34D}
+.s-done{background:rgba(16,185,129,.2);color:var(--green)}
+
+/* ── LOGOS ── */
+.logos-section{padding:40px 5%;text-align:center;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle)}
+.logos-label{font-size:.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2rem}
+.logos-row{display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap}
+.logo-item{font-size:.9rem;color:var(--text-muted);font-weight:600;letter-spacing:.05em;opacity:.6;transition:opacity .2s}
+.logo-item:hover{opacity:1}
+
+/* ── SECTIONS ── */
+section{padding:100px 5%}
+.section-label{font-size:.78rem;text-transform:uppercase;letter-spacing:.15em;color:var(--violet-core);font-weight:600;margin-bottom:1rem}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:1.2rem}
+.section-sub{font-size:1.1rem;color:var(--text-secondary);max-width:580px;line-height:1.7}
+.text-center{text-align:center}.mx-auto{margin-left:auto;margin-right:auto}
+
+/* ── FEATURES GRID ── */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:4rem}
+.feature-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:28px;transition:all .3s;position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(139,92,246,.05),transparent);opacity:0;transition:opacity .3s}
+.feature-card:hover{border-color:var(--border);transform:translateY(-4px);box-shadow:0 20px 60px rgba(139,92,246,.1)}
+.feature-card:hover::before{opacity:1}
+.feat-icon{width:48px;height:48px;border-radius:12px;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1.2rem}
+.feat-title{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:600;margin-bottom:.6rem}
+.feat-desc{font-size:.9rem;color:var(--text-secondary);line-height:1.6}
+
+/* ── AGENTS ── */
+.agents-section{background:linear-gradient(180deg,var(--bg) 0%,rgba(91,33,182,.05) 50%,var(--bg) 100%)}
+.agents-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-top:3.5rem}
+.agent-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:22px;display:flex;gap:16px;align-items:flex-start;transition:all .3s}
+.agent-card:hover{border-color:var(--border);box-shadow:0 8px 30px rgba(139,92,246,.08)}
+.agent-num{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--violet-deep),var(--violet-bright));display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0}
+.agent-name{font-weight:600;font-size:.95rem;margin-bottom:.3rem}
+.agent-desc{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
+
+/* ── HOW IT WORKS ── */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;margin-top:4rem;position:relative}
+.steps::before{content:'';position:absolute;top:32px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--violet-core),var(--violet-bright),transparent)}
+.step{text-align:center;position:relative}
+.step-num{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--violet-deep),var(--violet-bright));display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;margin:0 auto 1.5rem;box-shadow:0 0 30px rgba(139,92,246,.4)}
+.step-title{font-weight:600;font-size:1rem;margin-bottom:.5rem}
+.step-desc{font-size:.85rem;color:var(--text-secondary);line-height:1.6}
+
+/* ── COMPETITOR TABLE ── */
+.compare-section{background:var(--bg-card2)}
+.compare-table{width:100%;border-collapse:collapse;margin-top:3rem;border-radius:16px;overflow:hidden}
+.compare-table th{background:rgba(139,92,246,.1);padding:14px 20px;font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-secondary);font-weight:600;text-align:center}
+.compare-table th:first-child{text-align:left}
+.compare-table td{padding:14px 20px;border-bottom:1px solid var(--border-subtle);font-size:.9rem;text-align:center;color:var(--text-secondary)}
+.compare-table td:first-child{text-align:left;color:var(--text-primary);font-weight:500}
+.compare-table tr:hover td{background:rgba(255,255,255,.02)}
+.compare-table td.invoaice{color:var(--violet-light);font-weight:600}
+.chk{color:var(--green)}.crs{color:var(--red)}.hlf{color:var(--amber)}
+
+/* ── PRICING ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3.5rem;max-width:960px;margin-left:auto;margin-right:auto}
+.price-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:20px;padding:36px;position:relative;transition:all .3s}
+.price-card.featured{border-color:var(--violet-core);box-shadow:0 0 60px rgba(139,92,246,.2)}
+.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--violet-deep),var(--violet-bright));color:#fff;padding:.3rem 1.2rem;border-radius:999px;font-size:.75rem;font-weight:600;white-space:nowrap}
+.price-tier{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:.8rem}
+.price-amount{font-family:'Space Grotesk',sans-serif;margin-bottom:.3rem}
+.price-amount .num{font-size:3rem;font-weight:700;color:var(--text-primary)}
+.price-amount .per{font-size:.9rem;color:var(--text-muted)}
+.price-desc{font-size:.85rem;color:var(--text-secondary);margin-bottom:1.8rem;line-height:1.6}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:2rem}
+.price-features li{font-size:.88rem;color:var(--text-secondary);display:flex;align-items:center;gap:.5rem}
+.price-features li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.btn-price{width:100%;padding:.8rem;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;border:none;transition:all .2s;text-decoration:none;display:block;text-align:center}
+.btn-price-primary{background:linear-gradient(135deg,var(--violet-deep),var(--violet-bright));color:#fff;box-shadow:0 8px 24px rgba(139,92,246,.3)}
+.btn-price-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(139,92,246,.5)}
+.btn-price-ghost{background:transparent;color:var(--text-primary);border:1px solid var(--border-subtle)}
+.btn-price-ghost:hover{border-color:var(--border);background:rgba(255,255,255,.04)}
+
+/* ── TESTIMONIALS ── */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:3.5rem}
+.testi-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:28px;transition:all .3s}
+.testi-card:hover{border-color:var(--border);transform:translateY(-3px)}
+.testi-quote{font-size:.95rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.5rem;font-style:italic}
+.testi-quote::before{content:'"';font-size:2rem;color:var(--violet-core);line-height:.5;display:block;margin-bottom:.5rem}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--violet-deep),var(--violet-bright));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+.testi-name{font-weight:600;font-size:.9rem}
+.testi-role{font-size:.78rem;color:var(--text-muted)}
+.stars{color:#F59E0B;font-size:.8rem;margin-bottom:.8rem}
+
+/* ── CTA ── */
+.cta-section{padding:120px 5%;text-align:center;position:relative;overflow:hidden}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(139,92,246,.2),transparent 70%);pointer-events:none}
+.cta-section h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:700;letter-spacing:-.02em;margin-bottom:1.2rem}
+.cta-section p{font-size:1.1rem;color:var(--text-secondary);max-width:520px;margin:0 auto 2.5rem}
+.cta-note{font-size:.82rem;color:var(--text-muted);margin-top:1rem}
+
+/* ── FOOTER ── */
+footer{padding:60px 5% 40px;border-top:1px solid var(--border-subtle)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-brand p{font-size:.88rem;color:var(--text-muted);margin-top:.8rem;max-width:280px;line-height:1.6}
+.footer-col h4{font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:1.2rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+.footer-col a{font-size:.88rem;color:var(--text-secondary);text-decoration:none;transition:color .2s}
+.footer-col a:hover{color:var(--text-primary)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border-subtle);flex-wrap:wrap;gap:1rem}
+.footer-bottom p{font-size:.82rem;color:var(--text-muted)}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{font-size:.82rem;color:var(--text-muted);text-decoration:none}
+.footer-links a:hover{color:var(--text-secondary)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero-stats{gap:2rem}
+  .dash-body{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .steps::before{display:none}
+  .compare-table{font-size:.78rem}
+  .compare-table th,.compare-table td{padding:10px 12px}
+}
+@media(max-width:480px){
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg class="logo-wave" viewBox="0 0 60 30" fill="none">
+      <path d="M2 18 Q12 4 22 15 Q32 26 42 8 Q50 2 58 12" stroke="url(#wg)" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <defs><linearGradient id="wg" x1="0" y1="0" x2="60" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#5B21B6"/>
+        <stop offset="50%" stop-color="#8B5CF6"/>
+        <stop offset="100%" stop-color="#DDD6FE"/>
+      </linearGradient></defs>
+    </svg>
+    <span class="logo-text">Invo<span class="ai">AI</span>ce<span class="io">.IO</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#agents">AI Agents</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#compare">Compare</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Get Early Access</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div>
+    <div class="hero-badge"><span class="badge-dot"></span>Now in Early Access · InvoAIce.io</div>
+    <h1>AP Automation<br/>Built for the <span class="grad">AI Era</span></h1>
+    <p class="hero-sub">Replace your legacy Kofax, OpenText VIM, or manual process with an 8-agent AI swarm that processes invoices in 14 seconds at $4.20 each — with 88% touchless approval.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary">Start Free Trial →</a>
+      <a href="#features" class="btn-ghost">See How It Works</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">88%</div><div class="stat-label">Touchless Rate</div></div>
+      <div><div class="stat-num">14s</div><div class="stat-label">Avg Processing Time</div></div>
+      <div><div class="stat-num">$4.20</div><div class="stat-label">Cost Per Invoice</div></div>
+      <div><div class="stat-num">8</div><div class="stat-label">AI Agents</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PREVIEW -->
+<div class="preview-section fade-in">
+  <div class="dashboard-card">
+    <div class="dash-header">
+      <div class="dash-dots"><span></span><span></span><span></span></div>
+      <div class="dash-url">app.invoaice.io/dashboard</div>
+    </div>
+    <div class="dash-body">
+      <div class="dash-metric">
+        <div class="dm-label">Invoices This Month</div>
+        <div class="dm-value">2,847</div>
+        <div class="dm-sub">↑ 12% vs last month</div>
+      </div>
+      <div class="dash-metric">
+        <div class="dm-label">Auto-Approved</div>
+        <div class="dm-value">88.7%</div>
+        <div class="dm-sub">↑ 4.2pts improvement</div>
+      </div>
+      <div class="dash-metric">
+        <div class="dm-label">Cost Per Invoice</div>
+        <div class="dm-value">$4.20</div>
+        <div class="dm-sub">vs $26.50 legacy avg</div>
+      </div>
+      <div class="dash-pipeline">
+        <div class="pipe-title">Live Processing Pipeline</div>
+        <div class="pipe-stages">
+          <div class="pipe-stage">
+            <div class="stage-badge s-ocr">OCR</div>
+            <div class="stage-count">47</div>
+            <div class="stage-lbl">Extracting</div>
+          </div>
+          <div class="pipe-stage">
+            <div class="stage-badge s-ai">AI Analysis</div>
+            <div class="stage-count">23</div>
+            <div class="stage-lbl">Screening</div>
+          </div>
+          <div class="pipe-stage">
+            <div class="stage-badge s-match">Matching</div>
+            <div class="stage-count">91</div>
+            <div class="stage-lbl">3-Way Match</div>
+          </div>
+          <div class="pipe-stage">
+            <div class="stage-badge s-pend">Approval</div>
+            <div class="stage-count">12</div>
+            <div class="stage-lbl">Pending</div>
+          </div>
+          <div class="pipe-stage">
+            <div class="stage-badge s-done">Posted</div>
+            <div class="stage-count">2,674</div>
+            <div class="stage-lbl">Complete</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGOS -->
+<div class="logos-section fade-in">
+  <div class="logos-label">Trusted by finance teams replacing</div>
+  <div class="logos-row">
+    <span class="logo-item">KOFAX / TUNGSTEN</span>
+    <span class="logo-item">OPENTEXT VIM</span>
+    <span class="logo-item">COUPA</span>
+    <span class="logo-item">BASWARE</span>
+    <span class="logo-item">MANUAL PROCESS</span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-label">Platform Features</div>
+  <h2 class="section-title">Everything AP Needs.<br/>Nothing It Doesn't.</h2>
+  <p class="section-sub">From receipt to ERP posting — fully automated, fully audited, fully compliant.</p>
+  <div class="features-grid">
+    <div class="feature-card fade-in">
+      <div class="feat-icon">🔍</div>
+      <div class="feat-title">AI-Native OCR</div>
+      <div class="feat-desc">Vendor-adaptive document intelligence that learns each supplier's invoice layout. No templates to maintain — ever. Average 99.1% field accuracy from day one.</div>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feat-icon">🛡️</div>
+      <div class="feat-title">Fraud Detection</div>
+      <div class="feat-desc">7-layer fraud screening on every invoice: BEC patterns, velocity anomalies, duplicate detection, new payee account flags, and round-number pattern analysis.</div>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feat-icon">🔗</div>
+      <div class="feat-title">3-Way Matching</div>
+      <div class="feat-desc">Instant PO + GRN matching with configurable tolerances by category. Full match auto-approves. Partial match routes intelligently to the right person.</div>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feat-icon">⚡</div>
+      <div class="feat-title">ERP Integration</div>
+      <div class="feat-desc">Native connectors to Oracle Fusion, SAP S/4HANA, JD Edwards, NetSuite, and Dynamics 365. Post approved invoices directly — no middleware, no CSV exports.</div>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feat-icon">✅</div>
+      <div class="feat-title">Smart Approvals</div>
+      <div class="feat-desc">Configurable authority matrix with amount tiers, dual-signature for $50K+, out-of-office delegation, and SLA-based escalation. SOX controls built in.</div>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feat-icon">🤖</div>
+      <div class="feat-title">Aria AI Assistant</div>
+      <div class="feat-desc">Ask anything in plain English. "Why was this invoice held?" "Who approves Oracle invoices over $100K?" Aria answers from your policies and platform data instantly.</div>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feat-icon">📊</div>
+      <div class="feat-title">Real-Time Analytics</div>
+      <div class="feat-desc">Live spend analytics, Days Payable Outstanding trends, early payment discount tracking, fraud risk heat maps, and AP health assessments — all in one dashboard.</div>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feat-icon">🚀</div>
+      <div class="feat-title">AP Discovery</div>
+      <div class="feat-desc">Point InvoAIce at your ERP. In 90 seconds, get a full competitive analysis of your current platform, migration readiness score, and projected annual savings.</div>
+    </div>
+    <div class="feature-card fade-in">
+      <div class="feat-icon">🏢</div>
+      <div class="feat-title">Multi-Entity Ready</div>
+      <div class="feat-desc">Full multi-tenant, multi-entity, multi-currency support. Each entity gets isolated data, its own approval chains, ERP connections, and entity-specific analytics.</div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section id="agents" class="agents-section">
+  <div class="text-center">
+    <div class="section-label">8-Agent AI Swarm</div>
+    <h2 class="section-title">Not a Bot. A Swarm.</h2>
+    <p class="section-sub mx-auto">Eight specialized agents run in parallel on every invoice. Each agent contributes its verdict. No single point of failure. No black box.</p>
+  </div>
+  <div class="agents-grid">
+    <div class="agent-card fade-in"><div class="agent-num">01</div><div><div class="agent-name">DocumentIntelligenceAgent</div><div class="agent-desc">OCR extraction with vendor-adaptive learning. Gets faster and more accurate with every invoice from each supplier.</div></div></div>
+    <div class="agent-card fade-in"><div class="agent-num">02</div><div><div class="agent-name">FraudDetectionAgent</div><div class="agent-desc">7+ fraud checks per invoice. BEC patterns, velocity anomalies, duplicate detection, new payee flags. Risk score 0–1.</div></div></div>
+    <div class="agent-card fade-in"><div class="agent-num">03</div><div><div class="agent-name">ValidationAgent</div><div class="agent-desc">Enforces business rules: mandatory fields, date logic, currency consistency, Tax ID format, payment term validity.</div></div></div>
+    <div class="agent-card fade-in"><div class="agent-num">04</div><div><div class="agent-name">MatchingAgent</div><div class="agent-desc">2-way (PO) and 3-way (PO + GRN) matching with per-category tolerances. Line-by-line variance reporting.</div></div></div>
+    <div class="agent-card fade-in"><div class="agent-num">05</div><div><div class="agent-name">ApprovalRoutingAgent</div><div class="agent-desc">Determines the correct approver by amount, type, department, and entity. Enforces SLAs and auto-escalates.</div></div></div>
+    <div class="agent-card fade-in"><div class="agent-num">06</div><div><div class="agent-name">ExceptionResolutionAgent</div><div class="agent-desc">Auto-resolves common exceptions — minor PO variances, missing PO suggestions — without human intervention.</div></div></div>
+    <div class="agent-card fade-in"><div class="agent-num">07</div><div><div class="agent-name">ERPPostingAgent</div><div class="agent-desc">Formats and posts approved invoices directly to Oracle, SAP, NetSuite, Dynamics 365, and JDE. Returns transaction IDs.</div></div></div>
+    <div class="agent-card fade-in"><div class="agent-num">08</div><div><div class="agent-name">RAGAssistantAgent (Aria)</div><div class="agent-desc">Answers any AP question in plain English using your company's policy documents + platform knowledge. Voice-enabled.</div></div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="text-center">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Invoice In. Insight Out.</h2>
+    <p class="section-sub mx-auto">From email attachment to ERP posting in under 30 seconds — fully automated, fully audited.</p>
+  </div>
+  <div class="steps">
+    <div class="step fade-in">
+      <div class="step-num">1</div>
+      <div class="step-title">Invoice Received</div>
+      <div class="step-desc">Email, upload, or API. PDF, image, or any format. The system handles it automatically.</div>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">2</div>
+      <div class="step-title">AI Extraction</div>
+      <div class="step-desc">DocumentIntelligenceAgent reads every field. Vendor-adaptive learning brings accuracy above 99%.</div>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">3</div>
+      <div class="step-title">Fraud & Validation</div>
+      <div class="step-desc">7-layer fraud screen runs in parallel with business rule validation. Risky invoices are held immediately.</div>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">4</div>
+      <div class="step-title">3-Way Match</div>
+      <div class="step-desc">Invoice matched to PO and GRN. Full match auto-approves. Exceptions routed to the right person.</div>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">5</div>
+      <div class="step-title">Posted to ERP</div>
+      <div class="step-desc">Approved invoices post directly to your ERP. Full audit trail. No manual entry. No delays.</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section id="compare" class="compare-section">
+  <div class="text-center">
+    <div class="section-label">Comparison</div>
+    <h2 class="section-title">How We Stack Up</h2>
+    <p class="section-sub mx-auto">Don't take our word for it. Compare the numbers.</p>
+  </div>
+  <div style="overflow-x:auto;margin-top:3rem">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Capability</th>
+        <th style="color:var(--violet-light)">InvoAIce</th>
+        <th>Kofax</th>
+        <th>OpenText VIM</th>
+        <th>Coupa</th>
+        <th>Manual</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Cost per invoice</td><td class="invoaice">$4.20</td><td>$22.50</td><td>$28.00</td><td>$14.00</td><td>$38.00</td></tr>
+      <tr><td>Processing time</td><td class="invoaice">14 seconds</td><td>Hours</td><td>Days</td><td>Minutes</td><td>Days</td></tr>
+      <tr><td>Touchless rate</td><td class="invoaice">88%+</td><td>~40%</td><td>~45%</td><td>~60%</td><td>0%</td></tr>
+      <tr><td>AI / ML native</td><td class="invoaice chk">✓ 8 agents</td><td class="crs">✗ Rule-based</td><td class="crs">✗ Rule-based</td><td class="hlf">⚬ Generic AI</td><td class="crs">✗</td></tr>
+      <tr><td>Fraud detection</td><td class="invoaice chk">✓ 7-layer</td><td class="crs">✗ None</td><td class="crs">✗ None</td><td class="hlf">⚬ Basic</td><td class="crs">✗</td></tr>
+      <tr><td>Implementation time</td><td class="invoaice">6 weeks</td><td>9–18 months</td><td>12–24 months</td><td>6–12 months</td><td>N/A</td></tr>
+      <tr><td>Template maintenance</td><td class="invoaice chk">✓ Zero</td><td class="crs">✗ High</td><td class="crs">✗ Very High</td><td class="hlf">⚬ Medium</td><td class="crs">✗ Manual</td></tr>
+      <tr><td>Multi-ERP support</td><td class="invoaice chk">✓ 5 ERPs</td><td class="hlf">⚬ Partial</td><td class="crs">✗ SAP only</td><td class="hlf">⚬ Via connectors</td><td class="crs">✗</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="text-center">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Straightforward Pricing</h2>
+    <p class="section-sub mx-auto">No per-user fees. No surprise infrastructure costs. Pay for what you process.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card fade-in">
+      <div class="price-tier">Starter</div>
+      <div class="price-amount"><span class="num">$4.20</span><span class="per"> / invoice</span></div>
+      <p class="price-desc">Up to 2,000 invoices/month. Perfect for growing AP teams replacing spreadsheets.</p>
+      <ul class="price-features">
+        <li>All 8 AI agents</li>
+        <li>1 ERP connection</li>
+        <li>Up to 5 users</li>
+        <li>Email ingestion</li>
+        <li>Standard analytics</li>
+        <li>SOX audit trail</li>
+      </ul>
+      <a href="#cta" class="btn-price btn-price-ghost">Start Free Trial</a>
+    </div>
+    <div class="price-card featured fade-in">
+      <div class="price-badge">Most Popular</div>
+      <div class="price-tier">Growth</div>
+      <div class="price-amount"><span class="num">$3.50</span><span class="per"> / invoice</span></div>
+      <p class="price-desc">2,001–10,000 invoices/month. For established AP teams ready to go fully touchless.</p>
+      <ul class="price-features">
+        <li>All 8 AI agents</li>
+        <li>3 ERP connections</li>
+        <li>Unlimited users</li>
+        <li>Multi-entity support</li>
+        <li>Advanced analytics</li>
+        <li>AP Discovery included</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="#cta" class="btn-price btn-price-primary">Get Started →</a>
+    </div>
+    <div class="price-card fade-in">
+      <div class="price-tier">Enterprise</div>
+      <div class="price-amount"><span class="num">Custom</span></div>
+      <p class="price-desc">10,000+ invoices/month. Multi-region, SLA guarantees, dedicated success team.</p>
+      <ul class="price-features">
+        <li>Unlimited ERP connections</li>
+        <li>Custom AI training</li>
+        <li>Dedicated infrastructure</li>
+        <li>99.9% SLA</li>
+        <li>SOC 2 Type II report</li>
+        <li>White-glove implementation</li>
+        <li>24/7 support</li>
+      </ul>
+      <a href="mailto:enterprise@invoaice.io" class="btn-price btn-price-ghost">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section style="background:var(--bg-card2);padding:100px 5%">
+  <div class="text-center">
+    <div class="section-label">Customer Stories</div>
+    <h2 class="section-title">The Numbers Don't Lie</h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testi-card fade-in">
+      <div class="stars">★★★★★</div>
+      <p class="testi-quote">We replaced 9 years of Kofax in 5 weeks. Our touchless rate went from 38% to 91% in the first quarter. The fraud detection alone paid for the first year.</p>
+      <div class="testi-author"><div class="testi-avatar">SK</div><div><div class="testi-name">Sarah K.</div><div class="testi-role">VP Finance, Manufacturing Co.</div></div></div>
+    </div>
+    <div class="testi-card fade-in">
+      <div class="stars">★★★★★</div>
+      <p class="testi-quote">OpenText VIM was costing us $28/invoice and our SAP team spent 30% of their time on patch regression testing. InvoAIce at $4.20 with zero maintenance is a no-brainer.</p>
+      <div class="testi-author"><div class="testi-avatar">MR</div><div><div class="testi-name">Marcus R.</div><div class="testi-role">Director AP, Global Retail Group</div></div></div>
+    </div>
+    <div class="testi-card fade-in">
+      <div class="stars">★★★★★</div>
+      <p class="testi-quote">Aria AI assistant is genuinely useful. My AP team asks it questions instead of emailing me. Invoice disputes get resolved in seconds. It knows our policies better than our new hires.</p>
+      <div class="testi-author"><div class="testi-avatar">JP</div><div><div class="testi-name">Jessica P.</div><div class="testi-role">AP Manager, Healthcare Network</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="section-label">Get Started</div>
+  <h2>Ready to Leave the<br/><span style="background:linear-gradient(135deg,var(--violet-core),var(--violet-bright),var(--violet-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Legacy Behind?</span></h2>
+  <p>Run AP Discovery on your current system in 90 seconds. See your migration plan, ROI projection, and competitive analysis — instantly, for free.</p>
+  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+    <a href="mailto:hello@invoaice.io" class="btn-primary" style="font-size:1.05rem;padding:.9rem 2.2rem">Start Free Discovery →</a>
+    <a href="mailto:demo@invoaice.io" class="btn-ghost" style="font-size:1.05rem;padding:.9rem 2.2rem">Request a Demo</a>
+  </div>
+  <p class="cta-note">No credit card required · 6-week implementation · Full data migration included</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="margin-bottom:.8rem;display:inline-flex">
+        <svg class="logo-wave" viewBox="0 0 60 30" fill="none"><path d="M2 18 Q12 4 22 15 Q32 26 42 8 Q50 2 58 12" stroke="url(#wg2)" stroke-width="3.5" stroke-linecap="round" fill="none"/><defs><linearGradient id="wg2" x1="0" y1="0" x2="60" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#5B21B6"/><stop offset="50%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient></defs></svg>
+        <span class="logo-text">Invo<span class="ai">AI</span>ce<span class="io">.IO</span></span>
+      </a>
+      <p>AI-native accounts payable automation. Replace legacy platforms in 6 weeks. 88% touchless. $4.20/invoice.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#agents">AI Agents</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#compare">Compare</a></li>
+        <li><a href="#">AP Discovery</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="mailto:hello@invoaice.io">Contact</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">API Reference</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Status</a></li>
+        <li><a href="#">SOC 2</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 InvoAIce Inc. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Security</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Intersection Observer for fade-in animations
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+}, {threshold:0.12});
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.boxShadow = window.scrollY > 20 ? '0 4px 40px rgba(0,0,0,.5)' : '';
+});
+
+// Animated counter for stats
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  const isFloat = el.dataset.float === 'true';
+  const dur = 2000;
+  const start = performance.now();
+  function update(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = target * ease;
+    el.textContent = prefix + (isFloat ? val.toFixed(2) : Math.round(val)) + suffix;
+    if(p < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+</script>
+</body>
+</html>

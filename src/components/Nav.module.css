@@ -1,0 +1,65 @@
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 5%; display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap;
+  height: 76px; backdrop-filter: blur(20px);
+  background: rgba(5,5,5,0.8); border-bottom: 1px solid var(--border-subtle);
+  transition: box-shadow .3s;
+}
+.scrolled { box-shadow: 0 4px 40px rgba(0,0,0,.5); }
+.logo {
+  display: flex; align-items: center; gap: 14px;
+  text-decoration: none; color: var(--text-primary);
+}
+.links {
+  display: flex; align-items: center; gap: 1.6rem; list-style: none;
+}
+.links a {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: .85rem; font-weight: 500; transition: color .2s;
+  white-space: nowrap;
+}
+.links a:hover { color: var(--text-primary); }
+.cta {
+  background: linear-gradient(135deg, var(--violet-deep), var(--violet-bright));
+  color: #fff; border: none; padding: .55rem 1.4rem; border-radius: 8px;
+  font-size: .9rem; font-weight: 600; cursor: pointer; text-decoration: none;
+  transition: opacity .2s, transform .2s; white-space: nowrap;
+}
+.cta:hover { opacity: .9; transform: translateY(-1px); }
+
+/* Hamburger */
+.burger {
+  display: none; flex-direction: column; gap: 5px; cursor: pointer;
+  background: none; border: none; padding: 4px;
+}
+.burger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text-secondary); border-radius: 2px; transition: all .2s;
+}
+
+/* Mobile dropdown */
+.mobileMenu {
+  position: absolute; top: 76px; left: 0; right: 0;
+  background: rgba(5,5,5,0.97); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; flex-direction: column; padding: 1.2rem 5%;
+  gap: .2rem; z-index: 99;
+}
+.mobileMenu a {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: .95rem; font-weight: 500; padding: .7rem 0;
+  border-bottom: 1px solid var(--border-subtle); transition: color .2s;
+}
+.mobileMenu a:hover { color: var(--text-primary); }
+.mobileCta {
+  margin-top: .5rem; border: none !important;
+  background: linear-gradient(135deg, var(--violet-deep), var(--violet-bright));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; font-weight: 700 !important;
+}
+
+@media(max-width: 900px) {
+  .links { display: none; }
+  .burger { display: flex; }
+}
