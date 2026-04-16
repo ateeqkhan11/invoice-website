@@ -4,7 +4,7 @@ import styles from './Hero.module.css'
 const STATS = [
   { target: 90,   suffix: '%',  label: 'Touchless Rate',       float: false, prefix: '' },
   { target: 14,   suffix: 's',  label: 'Avg Processing Time',  float: false, prefix: '' },
-  { target: 4.20, suffix: '',   label: 'Cost Per Invoice',      float: true,  prefix: '$' },
+  { target: 3.20, suffix: '',   label: 'Cost Per Invoice',      float: true,  prefix: '$' },
   { target: 8,    suffix: '',   label: 'AI Agents',             float: false, prefix: '' },
 ]
 
